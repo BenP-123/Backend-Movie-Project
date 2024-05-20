@@ -11,29 +11,30 @@ const addCritic = mapProperties({
 });
 
 function read(review_id) {
-    return knex('reviews as r')
+    return knex("reviews")
       .select('*')
       .where({ review_id })
       .first();
-  }
+}
 
-  function destroy(review_id) {
+function destroy(review_id) {
     return knex('reviews').where({ review_id }).del();
-  }
+}
 
-  function update(updatedReview) {
-    const review_id = updatedReview.review_id;
-    return knex('reviews')
-      .where({ review_id: review_id })
-      .update(updatedReview)
-      .then(() => {
-        return knex('reviews')
-          .select(['*'])
-          .where({ review_id: review_id })
-          .first()
-          .then(addCritic);
-      });
-  }
+function update(updatedReview) {
+  const review_id = updatedReview.review_id;
+  return knex('reviews')
+    .where({ review_id: review_id })
+    .update(updatedReview)
+    .then(() => {
+      return knex('reviews')
+        .join('critics as c', 'reviews.critic_id', 'c.critic_id')
+        .select('reviews.*', )
+        .where({ review_id: review_id })
+        .first()
+        .then(addCritic);
+    });
+}
 
 
 module.exports = {

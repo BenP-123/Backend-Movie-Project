@@ -22,8 +22,7 @@ async function list(req, res, next) {
 async function read(req, res, next) {
   const knexInstance = req.app.get("db");
   const { movie } = res.locals;
-  const movieId = movie.movie_id;
-  res.json({ data: await service.read(movieId) });
+  res.json({ data: movie });
 }
 
 async function listTheaters(req, res, next) {

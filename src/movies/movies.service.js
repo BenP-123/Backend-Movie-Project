@@ -15,7 +15,7 @@ function list(showing) {
     return knex('movies as m')
     .join('movies_theaters as mt', 'm.movie_id', 'mt.movie_id')
     .select('m.movie_id', 'm.title', 'm.runtime_in_minutes', 'm.rating', 'm.description', 'm.image_url')
-    .where('mt.is_showing', '=', true);
+    .where('mt.is_showing', true);
   }
   return knex("movies").select("*")
 }
@@ -30,7 +30,8 @@ function read(movie_id) {
 function listTheaters(movie_id) {
     return knex('movies as m')
     .join('movies_theaters as mt', 'm.movie_id', 'mt.movie_id')
-    .select('mt.theater_id', 'mt.name', 'mt.address_line_1', 'mt.address_line_2',
+    .join('theaters as t', 'mt.theater_id', 't.theater_id')
+    .select('mt.theater_id', 't.name', 'mt.address_line_1', 'mt.address_line_2',
      'mt.city', 'mt.state', 'mt.zip', 'mt.created_at', 'mt.updated_at', 'mt.is_showing', 'm.movie_id')
     .where({ movie_id });
 }
@@ -40,7 +41,6 @@ function listReviews(movie_id) {
     .join('critics as c', 'r.critic_id', 'c.critic_id')
     .select('r.review_id', 'r.content', 'r.score', 'r.created_at', 'r.updated_at', 'r.critic_id', 'r.movie_id')
     .where({ movie_id })
-    .first()
     .then(addCritic);
   }
 

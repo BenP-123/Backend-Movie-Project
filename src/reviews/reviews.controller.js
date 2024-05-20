@@ -11,24 +11,23 @@ async function reviewExists(req, res, next) {
   return next({ status: 404, message: `Review cannot be found.` });
 }
 
-async function read(req, res, next) {
-  const knexInstance = req.app.get("db");
+async function read(req, res) {
   const { review } = res.locals;
   res.json({ data: review });
 }
 
 async function update(req, res) {
     const updatedReview = {
-        ...response.locals.review,
-        ...request.body.data,
-        review_id: response.locals.review.review_id,
+        ...res.locals.review,
+        ...req.body.data,
+        review_id: res.locals.review.review_id,
       };
-      const data = await service.update(updatedReview);
+    const data = await service.update(updatedReview);
     res.json({ data });
   }
 
 async function destroy(req, res) {
-    await service.delete(res.locals.review.review_id);
+    await service.destroy(res.locals.review.review_id);
     res.sendStatus(204);
   }
 

@@ -1,6 +1,9 @@
 if (process.env.USER) require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const app = express();
+
+app.use(cors());
 
 const moviesRouter = require("./movies/movies.router");
 const reviewsRouter = require("./reviews/reviews.router");
@@ -14,6 +17,5 @@ app.use("/reviews", reviewsRouter);
 app.use("/theaters", theatersRouter);
 
 app.use(notFound);
-
 
 module.exports = app;

@@ -8,7 +8,7 @@ async function movieExists(req, res, next) {
     res.locals.movie = movie;
     return next();
   }
-  return next({ status: 404, message: `Movie cannot be found.` });
+  res.status(404).json({ error: `Movie cannot be found.` });
 }
 
 async function list(req, res, next) {

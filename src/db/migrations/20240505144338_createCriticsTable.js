@@ -5,9 +5,11 @@ exports.up = function (knex) {
     table.string("surname");
     table.string("organization_name");
     table.timestamps(true, true);
-  });
+  })
+  .catch(err => console.error('Error creating critics table:', err));  // Error logging for table creation
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable("critics");
+  return knex.schema.dropTable("critics")
+  .catch(err => console.error('Error dropping critics table:', err));  // Error logging for table dropping
 };
